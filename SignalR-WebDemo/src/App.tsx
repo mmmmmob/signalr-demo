@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import * as signalR from "@microsoft/signalr";
+import dayjs from "dayjs";
+import { FC, useEffect, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+type EventReturn = {
+  time: string;
+  index: number;
+  notification: boolean;
+};
+
+const App: FC = () => {
+  const hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl("http://localhost:5179/notification-test")
+    .configureLogging(signalR.LogLevel.None)
+    .build();
+
+  hubConnection.start();
+
+  const [times, setTimes] = useState<string | null>(
+    dayjs().format("HH:mm:ss DD-MM-YYYY")
+  );
+
+  useEffect(() => {
+    hubConnection.on("RecieveTime", (res: EventReturn) => {
+      if (res.notification) {
+        console.log(res);
+        notifications.show({
+          title: `Index at ${res.index}`,
+          message: `${dayjs(res.time).format("MMM DD, YYYY")}`,
+        });
+      }
+      setTimes(dayjs(res.time).format("HH:mm:ss DD-MM-YYYY"));
+    });
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Box>{times}</Box>
     </>
-  )
-}
-
-export default App
+  );
+};
+export default App;
