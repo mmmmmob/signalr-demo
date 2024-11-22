@@ -28,7 +28,11 @@ const App: FC = () => {
         console.log(res);
         notifications.show({
           title: `Index at ${res.index}`,
-          message: `${dayjs(res.time).format("MMM DD, YYYY")}`,
+          message: `Sent on ${dayjs(res.time).format("MMM DD, YYYY")}`,
+          position: "top-center",
+          withCloseButton: false,
+          loading: false,
+          autoClose: 1000,
         });
       }
       setTimes(dayjs(res.time).format("HH:mm:ss DD-MM-YYYY"));
@@ -37,7 +41,17 @@ const App: FC = () => {
 
   return (
     <>
-      <Box>{times}</Box>
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h1>Current time is</h1>
+        <h3>{times}</h3>
+      </Box>
     </>
   );
 };
