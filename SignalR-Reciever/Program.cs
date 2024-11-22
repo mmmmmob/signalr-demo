@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 string hubUrl = "http://localhost:5179/notification-test";
 var hubConnection = new HubConnectionBuilder().WithUrl(hubUrl).Build();
 
-hubConnection.On<dynamic>("RecieveTime", (data) =>
+hubConnection.On<dynamic>("ReceiveTime", (data) =>
 {
   // Convert dynamic to a JSON string
   var json = data.ToString();
@@ -18,7 +18,8 @@ hubConnection.On<dynamic>("RecieveTime", (data) =>
   int index = root.GetProperty("index").GetInt32();
   bool notification = root.GetProperty("notification").GetBoolean();
 
-  Console.WriteLine($"Message recieved ->\nTime: {time}\nIndex: {index}\nNotification: {notification}");
+  Console.WriteLine($"Message received ->\nTime: {time}\nIndex: {index}\nNotification: {notification}");
+  Console.WriteLine("------------------------");
 });
 
 try

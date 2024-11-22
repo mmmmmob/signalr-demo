@@ -23,7 +23,7 @@ const App: FC = () => {
   );
 
   useEffect(() => {
-    hubConnection.on("RecieveTime", (res: EventReturn) => {
+    hubConnection.on("ReceiveTime", (res: EventReturn) => {
       if (res.notification) {
         console.log(res);
         notifications.show({

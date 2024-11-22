@@ -33,7 +33,7 @@ namespace SignalRWebApi
             notification = false;
           }
 
-          await _timeHub.Clients.All.SendAsync("RecieveTime", new
+          await _timeHub.Clients.All.SendAsync("ReceiveTime", new
           {
             Time = time,
             Index = index,
