@@ -1,4 +1,4 @@
-import { Box } from "@mantine/core";
+import { Paper, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import * as signalR from "@microsoft/signalr";
 import dayjs from "dayjs";
@@ -28,11 +28,15 @@ const App: FC = () => {
         console.log(res);
         notifications.show({
           title: `Index at ${res.index}`,
-          message: `Sent on ${dayjs(res.time).format("MMM DD, YYYY")}`,
-          position: "top-center",
+          message: `Sent on ${dayjs(res.time).format("HH:mm:ss")}`,
+          position: "bottom-center",
           withCloseButton: false,
           loading: false,
-          autoClose: 1000,
+          autoClose: 3000,
+          radius: "md",
+          m: 20,
+          withBorder: true,
+          style: { textAlign: "center" },
         });
       }
       setTimes(dayjs(res.time).format("HH:mm:ss DD-MM-YYYY"));
@@ -40,19 +44,21 @@ const App: FC = () => {
   }, []);
 
   return (
-    <>
-      <Box
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+    <div>
+      <Paper
+        m={20}
+        shadow="sm"
+        radius="md"
+        withBorder
+        p="xl"
+        style={{ textAlign: "center" }}
       >
-        <h1>Current time is</h1>
-        <h3>{times}</h3>
-      </Box>
-    </>
+        <Text fw={700} size="xl">
+          Current time is:
+        </Text>
+        <Text>{times}</Text>
+      </Paper>
+    </div>
   );
 };
 export default App;
